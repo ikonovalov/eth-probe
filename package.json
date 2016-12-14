@@ -1,0 +1,22 @@
+{
+  "name": "eth-probe",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Igor Konovalov",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ikonovalov/eth-probe.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "bin": {
+    "fforce": "./bin/cli"
+  },
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "web3": "^0.17.0-beta"
+  }
+}

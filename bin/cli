@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+'use strict';
+const Web3 = require('web3');
+const EthProbe = require('../index');
+
+const web3 = new Web3();
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+
+const ethProbe = new EthProbe(web3);
+
+let txFrom = ethProbe.tx.fromAddress('0xb6e0f61fe0afa2306b9746e6da825fcb9924cfdc');
+console.log(txFrom);
+
