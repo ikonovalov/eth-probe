@@ -14,9 +14,17 @@ class EthProbe {
     get tx() {
         return {
             fromAddress: (address, options = {}) => {
-                let startBlock = options.startBlock || 0;
-                let endBlock = options.endBlock || this._web3.eth.blockNumber;
-                console.log(`Scan from ${startBlock} to ${endBlock}`)
+                const eth = this._web3.eth;
+                let startBlockNumber = options.startBlock || 0;
+                let endBlockNumber = options.endBlock || eth.blockNumber;
+
+                console.log(`Scan from ${startBlockNumber} to ${endBlockNumber}`);
+                for (let i = startBlockNumber; i <= endBlockNumber; i++) {
+                    let block = eth.getBlock(i, true);
+                    if (block.transactions.length) {
+                        console.log(block.number + ' -> ' + block.transactions.length)
+                    }
+                }
             }
         }
     }

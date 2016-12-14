@@ -17,6 +17,7 @@
   },
   "license": "LGPL-3.0",
   "dependencies": {
+    "colors": "^1.1.2",
     "web3": "^0.17.0-beta"
   }
 }
