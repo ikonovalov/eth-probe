@@ -8,8 +8,15 @@ web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
 const ethProbe = new EthProbe(web3);
 
-let promiseTxsFast = ethProbe.tx.toAddressFast('0x8bdfcef3d5ec77a77985d07925b05e5f9302b9a8', {fromOffset: 2000});
-promiseTxsFast.then(txs => console.log(txs));
+let addressFromScan = '0xd82b4fcd9fdc38e859208995edb232fbe59422b5';
+let printTotal = txs => {
+    console.log(txs);
+    console.log(`Total: ${txs.length}`);
+};
 
-// let promiseTxsFull = ethProbe.tx.toAddressFullScan('0x8bdfcef3d5ec77a77985d07925b05e5f9302b9a8', {fromOffset: 200});
-// promiseTxsFull.then(txs => console.log(txs));
+ethProbe.tx.toAddressFast(addressFromScan, {fromOffset: 500}).then(printTotal);
+
+ethProbe.tx.toAddressFullScan(addressFromScan, {fromOffset: 500}).then(printTotal);
+
+
+//0xd82b4fcd9fdc38e859208995edb232fbe59422b5
