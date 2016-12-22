@@ -5,18 +5,23 @@ const EthProbe = require('../index');
 
 const web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
-
 const ethProbe = new EthProbe(web3);
 
-let addressFromScan = '0xd82b4fcd9fdc38e859208995edb232fbe59422b5';
+let addressTo = '0xed350b23117fe4bcd9fa23f7667c6a49e8341da4'; // factory
+let addressFrom = '0x7116673528278887d37038d93bd749b66110ec35';
 let printTotal = txs => {
     console.log(txs);
     console.log(`Total: ${txs.length}`);
 };
 
-ethProbe.tx.toAddressFast(addressFromScan, {fromOffset: 500}).then(printTotal);
+ethProbe.tx.toAddressFast(addressTo, {fromOffset: 1000}).then(txHashes => {
+    let txHash = txHashes[0];
+    let tx = ethProbe.tx.getX(txHash);
+    console.log(`To address: ${tx.to.toString('hex')} -> ${addressFrom}`);
+    console.log(`Senders Address: ${tx.getSenderAddress().toString('hex')}`);
+    console.log(`Sender public: ${Buffer.concat([Buffer.from('04', 'hex'), tx.getSenderPublicKey()]).toString('hex')}`)
 
-ethProbe.tx.toAddressFullScan(addressFromScan, {fromOffset: 500}).then(printTotal);
+});
 
 
 //0xd82b4fcd9fdc38e859208995edb232fbe59422b5

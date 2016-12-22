@@ -1,9 +1,10 @@
 /**
  * Created by ikonovalov on 14/12/16.
  */
-'use strict';
+"use strict";
 
-const txMod = require('./lib/tx');
+const Tx = require('ethereumjs-tx');
+const Eu = require('ethereumjs-util');
 
 const composeBlockScanOptions = (eth, options) => {
     let fromBlockNumber = options.fromBlock || 0;
@@ -17,7 +18,21 @@ const composeBlockScanOptions = (eth, options) => {
         fromBlockNumber: fromBlockNumber,
         toBlockNumber: toBlockNumber
     }
-}
+};
+
+const buildTx = (gethTx) => {
+    let tx = new Tx(null);
+    tx.nonce = Eu.intToHex(gethTx.nonce);
+    tx.gasPrice = Eu.intToHex(gethTx.gasPrice);
+    tx.gasLimit = Eu.intToHex(gethTx.gas);
+    tx.to = gethTx.to;
+    tx.value = Eu.intToHex(gethTx.value);
+    tx.data = gethTx.input;
+    tx.r = gethTx.r;
+    tx.s = gethTx.s;
+    tx.v = gethTx.v;
+    return tx;
+};
 
 const flatten = list => list.reduce(
     (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
@@ -31,6 +46,26 @@ class EthProbe {
 
     get tx() {
         return {
+
+            /**
+             * Get original Web3 tx (REQUIRE Geth 1.5+)
+             * @param txHash
+             * @returns {*}
+             */
+            get: (txHash) => {
+                return this._web3.eth.getTransaction(txHash)
+            },
+
+            /**
+             * Get ethereumjs-Tx.
+             * @param txHash
+             */
+            getX: (txHash) => {
+                let gtx = this._web3.eth.getTransaction(txHash);
+                let tx = buildTx(gtx);
+                return tx;
+            },
+
             /**
              * Search TXs using log filtration algorithm.
              * @param address
