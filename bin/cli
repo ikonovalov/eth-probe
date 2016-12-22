@@ -14,7 +14,9 @@ let printTotal = txs => {
     console.log(`Total: ${txs.length}`);
 };
 
-ethProbe.tx.toAddressFast(addressTo, {fromOffset: 1000}).then(txHashes => {
+let fastPromise = ethProbe.tx.toAddressFast(addressTo, {fromOffset: 1000});
+
+fastPromise.then(txHashes => {
     let txHash = txHashes[0];
     let tx = ethProbe.tx.getX(txHash);
     console.log(`To address: ${tx.to.toString('hex')} -> ${addressFrom}`);
